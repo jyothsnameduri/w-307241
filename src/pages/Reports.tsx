@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { BarChart, Download, Filter, Calendar, Users, Target, TrendingUp, PieChart, Brain, Shield, Database, Zap, Settings, ArrowUp, ArrowDown, AlertTriangle, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -147,13 +146,13 @@ const Reports = () => {
   ];
 
   const predictiveData = [
-    { name: 'Jan', actual: 245, predicted: 242, confidence: 95 },
-    { name: 'Feb', actual: 267, predicted: 265, confidence: 93 },
-    { name: 'Mar', actual: 289, predicted: 285, confidence: 91 },
-    { name: 'Apr', actual: 312, predicted: 315, confidence: 89 },
-    { name: 'May', actual: 298, predicted: 302, confidence: 92 },
-    { name: 'Jun', actual: null, predicted: 334, confidence: 87 },
-    { name: 'Jul', actual: null, predicted: 356, confidence: 84 },
+    { name: 'Jan', actual: 245, predicted: 242, confidence: 95, value: 245 },
+    { name: 'Feb', actual: 267, predicted: 265, confidence: 93, value: 267 },
+    { name: 'Mar', actual: 289, predicted: 285, confidence: 91, value: 289 },
+    { name: 'Apr', actual: 312, predicted: 315, confidence: 89, value: 312 },
+    { name: 'May', actual: 298, predicted: 302, confidence: 92, value: 298 },
+    { name: 'Jun', actual: null, predicted: 334, confidence: 87, value: 334 },
+    { name: 'Jul', actual: null, predicted: 356, confidence: 84, value: 356 },
   ];
 
   const aiPerformanceData = [
