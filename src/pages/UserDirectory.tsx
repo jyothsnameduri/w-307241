@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, Filter, Mail, Phone, MessageSquare, UserPlus } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -208,10 +207,10 @@ const UserDirectory = () => {
                   <p className="text-sm text-gray-600 truncate">{user.email}</p>
                   
                   <div className="flex gap-2 mt-2">
-                    <Badge className={getRoleBadgeColor(user.role)} size="sm">
+                    <Badge className={getRoleBadgeColor(user.role)}>
                       {user.role}
                     </Badge>
-                    <Badge className={getDepartmentColor(user.department)} size="sm">
+                    <Badge className={getDepartmentColor(user.department)}>
                       {user.department}
                     </Badge>
                   </div>

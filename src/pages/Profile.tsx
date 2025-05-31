@@ -19,7 +19,7 @@ const Profile = () => {
     name: user?.name || '',
     email: user?.email || '',
     phone: user?.phone || '',
-    department: user?.department || '',
+    department: user?.department || 'General' as 'IT' | 'HR' | 'Admin' | 'General',
   });
 
   const getRoleBadgeColor = (role: string) => {
@@ -66,7 +66,7 @@ const Profile = () => {
       name: user?.name || '',
       email: user?.email || '',
       phone: user?.phone || '',
-      department: user?.department || '',
+      department: user?.department || 'General' as 'IT' | 'HR' | 'Admin' | 'General',
     });
     setIsEditing(false);
   };
