@@ -21,11 +21,11 @@ const AgentDashboard = () => {
   };
 
   const performanceData = [
-    { name: 'Mon', resolved: 8, assigned: 10, responseTime: 2.1 },
-    { name: 'Tue', resolved: 12, assigned: 14, responseTime: 1.8 },
-    { name: 'Wed', resolved: 10, assigned: 12, responseTime: 2.3 },
-    { name: 'Thu', resolved: 15, assigned: 16, responseTime: 1.6 },
-    { name: 'Fri', resolved: 9, assigned: 11, responseTime: 2.0 },
+    { name: 'Mon', value: 8, resolved: 8, assigned: 10, responseTime: 2.1 },
+    { name: 'Tue', value: 12, resolved: 12, assigned: 14, responseTime: 1.8 },
+    { name: 'Wed', value: 10, resolved: 10, assigned: 12, responseTime: 2.3 },
+    { name: 'Thu', value: 15, resolved: 15, assigned: 16, responseTime: 1.6 },
+    { name: 'Fri', value: 9, resolved: 9, assigned: 11, responseTime: 2.0 },
   ];
 
   const categoryDistribution = [

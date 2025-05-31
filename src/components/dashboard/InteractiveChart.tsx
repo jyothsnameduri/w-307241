@@ -65,8 +65,9 @@ const InteractiveChart: React.FC<InteractiveChartProps> = ({
     },
   };
 
-  const handleDataPointClick = (dataPoint: ChartDataPoint) => {
-    if (enableDrillDown) {
+  const handleDataPointClick = (data: any, index?: number) => {
+    if (enableDrillDown && data && data.payload) {
+      const dataPoint = data.payload as ChartDataPoint;
       setSelectedDataPoint(dataPoint);
       onDrillDown?.(dataPoint);
     }
@@ -82,17 +83,11 @@ const InteractiveChart: React.FC<InteractiveChartProps> = ({
   const trend = calculateTrend();
 
   const renderChart = () => {
-    const commonProps = {
-      data,
-      onClick: enableDrillDown ? handleDataPointClick : undefined,
-      style: { cursor: enableDrillDown ? 'pointer' : 'default' }
-    };
-
     switch (type) {
       case 'line':
         return (
           <ChartContainer config={chartConfig} className="h-[250px]">
-            <LineChart {...commonProps}>
+            <LineChart data={data}>
               <XAxis dataKey={xAxisKey} />
               <YAxis />
               <ChartTooltip content={<ChartTooltipContent />} />
@@ -102,7 +97,7 @@ const InteractiveChart: React.FC<InteractiveChartProps> = ({
                 stroke={colors[0]} 
                 strokeWidth={3}
                 dot={{ fill: colors[0], strokeWidth: 2, r: 4 }}
-                activeDot={{ r: 6, fill: colors[0] }}
+                activeDot={{ r: 6, fill: colors[0], onClick: handleDataPointClick }}
               />
             </LineChart>
           </ChartContainer>
@@ -111,7 +106,7 @@ const InteractiveChart: React.FC<InteractiveChartProps> = ({
       case 'area':
         return (
           <ChartContainer config={chartConfig} className="h-[250px]">
-            <AreaChart {...commonProps}>
+            <AreaChart data={data}>
               <XAxis dataKey={xAxisKey} />
               <YAxis />
               <ChartTooltip content={<ChartTooltipContent />} />
@@ -121,6 +116,7 @@ const InteractiveChart: React.FC<InteractiveChartProps> = ({
                 stroke={colors[0]} 
                 fill={colors[0]}
                 fillOpacity={0.6}
+                onClick={enableDrillDown ? handleDataPointClick : undefined}
               />
             </AreaChart>
           </ChartContainer>
@@ -129,7 +125,7 @@ const InteractiveChart: React.FC<InteractiveChartProps> = ({
       case 'bar':
         return (
           <ChartContainer config={chartConfig} className="h-[250px]">
-            <BarChart {...commonProps}>
+            <BarChart data={data}>
               <XAxis dataKey={xAxisKey} />
               <YAxis />
               <ChartTooltip content={<ChartTooltipContent />} />
@@ -138,6 +134,7 @@ const InteractiveChart: React.FC<InteractiveChartProps> = ({
                 fill={colors[0]} 
                 radius={[4, 4, 0, 0]}
                 opacity={0.8}
+                onClick={enableDrillDown ? handleDataPointClick : undefined}
               />
             </BarChart>
           </ChartContainer>

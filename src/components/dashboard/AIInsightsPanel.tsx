@@ -133,10 +133,10 @@ const AIInsightsPanel: React.FC<AIInsightsPanelProps> = ({
                   <h4 className="font-semibold text-frappe-dark text-sm">{insight.title}</h4>
                 </div>
                 <div className="flex space-x-1">
-                  <Badge className={getConfidenceColor(insight.confidence)} size="sm">
+                  <Badge className={getConfidenceColor(insight.confidence)}>
                     {insight.confidence}%
                   </Badge>
-                  <Badge className={getImpactColor(insight.impact)} size="sm">
+                  <Badge className={getImpactColor(insight.impact)}>
                     {insight.impact}
                   </Badge>
                 </div>

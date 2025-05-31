@@ -71,17 +71,17 @@ const AdminDashboard = () => {
   };
 
   const predictiveData = [
-    { name: 'Current Week', tickets: 245, predicted: 245, accuracy: 98 },
-    { name: 'Next Week', tickets: 0, predicted: 267, accuracy: 85 },
-    { name: 'Week +2', tickets: 0, predicted: 289, accuracy: 78 },
-    { name: 'Week +3', tickets: 0, predicted: 301, accuracy: 72 }
+    { name: 'Current Week', value: 245, tickets: 245, predicted: 245, accuracy: 98 },
+    { name: 'Next Week', value: 267, tickets: 0, predicted: 267, accuracy: 85 },
+    { name: 'Week +2', value: 289, tickets: 0, predicted: 289, accuracy: 78 },
+    { name: 'Week +3', value: 301, tickets: 0, predicted: 301, accuracy: 72 }
   ];
 
   const departmentEfficiency = [
-    { name: 'IT', efficiency: 87, cost: 12500, satisfaction: 4.6 },
-    { name: 'HR', efficiency: 92, cost: 8900, satisfaction: 4.8 },
-    { name: 'Admin', efficiency: 85, cost: 6700, satisfaction: 4.5 },
-    { name: 'General', efficiency: 78, cost: 9800, satisfaction: 4.3 }
+    { name: 'IT', value: 87, efficiency: 87, cost: 12500, satisfaction: 4.6 },
+    { name: 'HR', value: 92, efficiency: 92, cost: 8900, satisfaction: 4.8 },
+    { name: 'Admin', value: 85, efficiency: 85, cost: 6700, satisfaction: 4.5 },
+    { name: 'General', value: 78, efficiency: 78, cost: 9800, satisfaction: 4.3 }
   ];
 
   return (
