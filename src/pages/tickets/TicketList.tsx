@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import SavedFilters from '@/components/tickets/SavedFilters';
 import { 
   Search, 
   Filter, 
@@ -21,7 +21,8 @@ import {
   Copy,
   Eye,
   MoreHorizontal,
-  Plus
+  Plus,
+  Zap
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -50,6 +51,7 @@ const TicketList = () => {
   const [priorityFilter, setPriorityFilter] = useState('all');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
+  const [currentFilters, setCurrentFilters] = useState({});
 
   // Mock data - in real app, this would come from API
   const tickets: Ticket[] = [
@@ -138,6 +140,13 @@ const TicketList = () => {
     );
   };
 
+  const applyFilter = (filters: Record<string, any>) => {
+    setCurrentFilters(filters);
+    // Apply filters to the ticket list
+    console.log('Applying filters:', filters);
+    // In real app, this would filter the tickets
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -150,10 +159,10 @@ const TicketList = () => {
         </Link>
       </div>
 
-      {/* Filters and Search */}
+      {/* Enhanced Filters and Search */}
       <Card>
         <CardContent className="p-4">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 lg:space-x-4">
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between space-y-4 lg:space-y-0 lg:space-x-4">
             <div className="flex-1 max-w-md">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -218,6 +227,33 @@ const TicketList = () => {
             </div>
           </div>
 
+          {/* Saved Filters Section */}
+          <div className="mt-4 pt-4 border-t">
+            <SavedFilters 
+              currentFilters={currentFilters}
+              onApplyFilter={applyFilter}
+            />
+          </div>
+
+          {/* Smart Filter Suggestions */}
+          <div className="mt-4 pt-4 border-t">
+            <div className="flex items-center space-x-2 mb-2">
+              <Zap className="h-4 w-4 text-frappe-warning" />
+              <h4 className="font-medium text-sm">AI Suggested Filters</h4>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Button variant="outline" size="sm" onClick={() => applyFilter({ priority: 'high', status: 'open' })}>
+                High Priority Open
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => applyFilter({ category: 'IT', createdToday: true })}>
+                New IT Issues
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => applyFilter({ assignee: 'unassigned' })}>
+                Unassigned Tickets
+              </Button>
+            </div>
+          </div>
+
           {selectedTickets.length > 0 && (
             <div className="mt-4 p-3 bg-frappe-primary/10 rounded-lg border border-frappe-primary/20">
               <div className="flex items-center justify-between">
@@ -235,7 +271,7 @@ const TicketList = () => {
         </CardContent>
       </Card>
 
-      {/* Ticket Table */}
+      {/* Enhanced Ticket Table */}
       <Card>
         <CardContent className="p-0">
           <Table>
@@ -258,12 +294,15 @@ const TicketList = () => {
                 <TableHead>Requester</TableHead>
                 <TableHead>Created</TableHead>
                 <TableHead>AI Score</TableHead>
+                <TableHead>Last Activity</TableHead>
                 <TableHead className="w-8"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {tickets.map((ticket) => {
                 const CategoryIcon = categoryIcons[ticket.category];
+                const lastActivity = Math.floor((Date.now() - ticket.updatedAt.getTime()) / (1000 * 60));
+                
                 return (
                   <TableRow key={ticket.id} className="hover:bg-gray-50">
                     <TableCell>
@@ -337,6 +376,11 @@ const TicketList = () => {
                       <Badge variant="secondary" className="text-xs">
                         {ticket.aiConfidence}%
                       </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-sm text-gray-600">
+                        {lastActivity < 60 ? `${lastActivity}m ago` : `${Math.floor(lastActivity / 60)}h ago`}
+                      </div>
                     </TableCell>
                     <TableCell>
                       <Link to={`/tickets/${ticket.id}`}>

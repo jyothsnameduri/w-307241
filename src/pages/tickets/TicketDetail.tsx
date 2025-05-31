@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import CollaborationIndicator from '@/components/tickets/CollaborationIndicator';
+import MentionInput from '@/components/tickets/MentionInput';
 import { 
   Clock, 
   User, 
@@ -22,7 +23,9 @@ import {
   Link2,
   Split,
   Eye,
-  EyeOff
+  EyeOff,
+  Zap,
+  TrendingUp
 } from 'lucide-react';
 
 const TicketDetail = () => {
@@ -59,6 +62,34 @@ The issue started this morning around 9 AM. I need access to my email urgently a
       { name: 'system-info.txt', size: '12 KB', url: '#' }
     ]
   };
+
+  // Mock active users for collaboration
+  const activeUsers = [
+    { id: '1', name: 'John Smith', avatar: '', action: 'editing' as const, timestamp: new Date() },
+    { id: '2', name: 'Sarah Wilson', avatar: '', action: 'viewing' as const, timestamp: new Date() }
+  ];
+
+  // Enhanced AI suggestions with pattern analysis
+  const enhancedAiSuggestions = [
+    {
+      type: 'response',
+      content: 'Based on similar cases, this appears to be an Active Directory synchronization issue. I recommend checking the password sync status and verifying domain controller replication.',
+      confidence: 92,
+      pattern: 'Authentication Issues'
+    },
+    {
+      type: 'escalation',
+      content: 'Consider escalating to Tier 2 support if AD sync issues persist for more than 2 hours.',
+      confidence: 85,
+      pattern: 'Time-based Escalation'
+    },
+    {
+      type: 'knowledge',
+      content: 'Related KB Article: "Troubleshooting Active Directory Password Sync Issues" matches this ticket with 94% relevance.',
+      confidence: 94,
+      pattern: 'Knowledge Base Match'
+    }
+  ];
 
   const activityLog = [
     {
@@ -142,6 +173,9 @@ The issue started this morning around 9 AM. I need access to my email urgently a
 
   return (
     <div className="space-y-6">
+      {/* Collaboration Indicator */}
+      <CollaborationIndicator activeUsers={activeUsers} currentUserId="current-user" />
+
       {/* Ticket Header */}
       <Card>
         <CardHeader>
@@ -325,7 +359,7 @@ The issue started this morning around 9 AM. I need access to my email urgently a
             </CardContent>
           </Card>
 
-          {/* Add Comment */}
+          {/* Enhanced Comment System with Mentions */}
           <Card>
             <CardHeader>
               <CardTitle>Add Comment</CardTitle>
@@ -343,10 +377,10 @@ The issue started this morning around 9 AM. I need access to my email urgently a
                     <span className="text-sm">Internal note (not visible to requester)</span>
                   </label>
                 </div>
-                <Textarea
-                  placeholder="Add your comment or update..."
+                <MentionInput
                   value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
+                  onChange={setNewComment}
+                  placeholder="Add your comment or update... Use @ to mention team members"
                   rows={4}
                 />
                 <div className="flex justify-between">
@@ -368,7 +402,7 @@ The issue started this morning around 9 AM. I need access to my email urgently a
           </Card>
         </div>
 
-        {/* Sidebar */}
+        {/* Enhanced Sidebar */}
         <div className="space-y-6">
           {/* Requester Info */}
           <Card>
@@ -394,16 +428,16 @@ The issue started this morning around 9 AM. I need access to my email urgently a
             </CardContent>
           </Card>
 
-          {/* AI Suggestions */}
+          {/* Enhanced AI Suggestions with Pattern Analysis */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <Brain className="h-5 w-5 text-frappe-primary" />
-                <span>AI Suggestions</span>
+                <span>AI Insights</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {aiSuggestions.map((suggestion, index) => (
+              {enhancedAiSuggestions.map((suggestion, index) => (
                 <div key={index} className="p-3 bg-blue-50 rounded border border-blue-200">
                   <div className="flex justify-between items-start mb-2">
                     <span className="text-xs font-medium text-blue-800 uppercase">
@@ -413,9 +447,29 @@ The issue started this morning around 9 AM. I need access to my email urgently a
                       {suggestion.confidence}%
                     </Badge>
                   </div>
-                  <p className="text-sm text-blue-700">{suggestion.content}</p>
+                  <p className="text-sm text-blue-700 mb-2">{suggestion.content}</p>
+                  <div className="flex items-center space-x-1">
+                    <TrendingUp className="h-3 w-3 text-blue-600" />
+                    <span className="text-xs text-blue-600">{suggestion.pattern}</span>
+                  </div>
                 </div>
               ))}
+              
+              {/* Pattern Analysis Section */}
+              <div className="border-t pt-3">
+                <h5 className="text-sm font-medium text-gray-700 mb-2">Pattern Analysis</h5>
+                <div className="space-y-2">
+                  <div className="text-xs text-gray-600">
+                    <span className="font-medium">Issue Category:</span> Authentication
+                  </div>
+                  <div className="text-xs text-gray-600">
+                    <span className="font-medium">Frequency:</span> 23 similar cases this month
+                  </div>
+                  <div className="text-xs text-gray-600">
+                    <span className="font-medium">Avg Resolution:</span> 4.2 hours
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
