@@ -1,13 +1,15 @@
-
 import React from 'react';
 import TicketStatsWidget from '@/components/dashboard/TicketStatsWidget';
 import ActivityFeedWidget from '@/components/dashboard/ActivityFeedWidget';
-import AIInsightsWidget from '@/components/dashboard/AIInsightsWidget';
 import ChartWidget from '@/components/dashboard/ChartWidget';
 import DashboardWidget from '@/components/dashboard/DashboardWidget';
+import WidgetContainer from '@/components/dashboard/WidgetContainer';
+import AIInsightsPanel from '@/components/dashboard/AIInsightsPanel';
+import InteractiveChart from '@/components/dashboard/InteractiveChart';
+import RealTimeMetrics from '@/components/dashboard/RealTimeMetrics';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Plus, BookOpen, MessageSquare, HelpCircle } from 'lucide-react';
+import { Plus, BookOpen, MessageSquare, HelpCircle, Brain, Target } from 'lucide-react';
 
 const EmployeeDashboard = () => {
   const myTicketStats = {
@@ -18,13 +20,20 @@ const EmployeeDashboard = () => {
   };
 
   const ticketTrendData = [
-    { name: 'Mon', value: 2 },
-    { name: 'Tue', value: 1 },
-    { name: 'Wed', value: 3 },
-    { name: 'Thu', value: 2 },
-    { name: 'Fri', value: 4 },
-    { name: 'Sat', value: 1 },
-    { name: 'Sun', value: 0 }
+    { name: 'Mon', value: 2, category: 'IT' },
+    { name: 'Tue', value: 1, category: 'HR' },
+    { name: 'Wed', value: 3, category: 'IT' },
+    { name: 'Thu', value: 2, category: 'General' },
+    { name: 'Fri', value: 4, category: 'IT' },
+    { name: 'Sat', value: 1, category: 'HR' },
+    { name: 'Sun', value: 0, category: 'General' }
+  ];
+
+  const productivityData = [
+    { name: 'Knowledge Base Usage', value: 85 },
+    { name: 'Self-Resolution Rate', value: 65 },
+    { name: 'Response Time', value: 78 },
+    { name: 'Satisfaction Score', value: 92 }
   ];
 
   const myTickets = [
@@ -71,6 +80,12 @@ const EmployeeDashboard = () => {
         </Button>
       </div>
 
+      {/* Real-time Metrics Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <RealTimeMetrics role="Employee" />
+      </div>
+
+      {/* Main Dashboard Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* My Tickets Overview */}
         <div className="lg:col-span-2">
@@ -78,7 +93,7 @@ const EmployeeDashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <DashboardWidget title="Quick Actions">
+        <WidgetContainer title="Quick Actions" onSettings={() => {}}>
           <div className="space-y-3">
             <Button className="w-full justify-start bg-frappe-primary hover:bg-frappe-primary/90 text-white">
               <Plus className="h-4 w-4 mr-2" />
@@ -97,77 +112,80 @@ const EmployeeDashboard = () => {
               FAQ
             </Button>
           </div>
-        </DashboardWidget>
+        </WidgetContainer>
       </div>
 
+      {/* Analytics and Insights Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* My Recent Tickets */}
-        <DashboardWidget title="My Recent Tickets" exportable>
-          <div className="space-y-3">
-            {myTickets.map((ticket) => (
-              <div key={ticket.id} className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-2 mb-1">
-                    <span className="font-medium text-frappe-primary">{ticket.id}</span>
-                    <Badge className={getStatusColor(ticket.status)}>
-                      {ticket.status}
-                    </Badge>
-                    <Badge className={getPriorityColor(ticket.priority)}>
-                      {ticket.priority}
-                    </Badge>
-                  </div>
-                  <h4 className="font-medium text-frappe-dark text-sm">{ticket.title}</h4>
-                  <p className="text-xs text-gray-500">Updated {ticket.updated}</p>
-                </div>
-                <Button variant="ghost" size="sm">
-                  <MessageSquare className="h-4 w-4" />
-                </Button>
-              </div>
-            ))}
-            <Button variant="outline" size="sm" className="w-full mt-3">
-              View All My Tickets
-            </Button>
-          </div>
-        </DashboardWidget>
-
-        {/* Ticket Trend */}
-        <ChartWidget 
+        <InteractiveChart 
           title="My Ticket Activity (This Week)" 
-          type="line" 
+          type="area" 
           data={ticketTrendData} 
           dataKey="value" 
           xAxisKey="name"
+          enableDrillDown={true}
+          showTrend={true}
+          onDrillDown={(dataPoint) => console.log('Drill down:', dataPoint)}
+        />
+
+        <InteractiveChart 
+          title="Personal Productivity Metrics" 
+          type="bar" 
+          data={productivityData} 
+          dataKey="value" 
+          xAxisKey="name"
+          colors={['#4C5BD4', '#28A745', '#FFC107', '#DC3545']}
+          showTrend={true}
         />
       </div>
 
+      {/* Smart Assistance and Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Quick Help Articles */}
-        <DashboardWidget title="Popular Help Articles" exportable>
-          <div className="space-y-3">
-            {quickHelp.map((article, index) => (
-              <div key={index} className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                <div className="flex-1">
-                  <h4 className="font-medium text-frappe-dark text-sm">{article.title}</h4>
-                  <div className="flex items-center space-x-2 mt-1">
-                    <Badge variant="outline" className="text-xs">{article.category}</Badge>
-                    <span className="text-xs text-gray-500">{article.views} views</span>
-                  </div>
-                </div>
-                <BookOpen className="h-4 w-4 text-gray-400" />
+        {/* AI-Powered Smart Assistance */}
+        <WidgetContainer title="Smart Assistance" aiInsights={true} onRefresh={() => {}}>
+          <div className="space-y-4">
+            <div className="p-3 rounded-lg bg-blue-50 border border-blue-200">
+              <div className="flex items-center space-x-2 mb-2">
+                <Brain className="h-4 w-4 text-blue-600" />
+                <span className="font-medium text-blue-900">Quick Answer</span>
+                <Badge className="bg-blue-100 text-blue-800 text-xs">92% confident</Badge>
               </div>
-            ))}
-            <Button variant="outline" size="sm" className="w-full mt-3">
-              Browse Knowledge Base
-            </Button>
+              <p className="text-sm text-blue-800">
+                For password reset issues, try the self-service portal first. It resolves 90% of login problems instantly.
+              </p>
+              <Button size="sm" variant="outline" className="mt-2 text-blue-600 border-blue-600">
+                Try Self-Service
+              </Button>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="font-medium text-gray-900">Recommended Articles</h4>
+              {[
+                { title: 'VPN Setup Guide', relevance: 95, category: 'Network' },
+                { title: 'Email Configuration', relevance: 87, category: 'Email' },
+                { title: 'Software Installation', relevance: 78, category: 'Software' }
+              ].map((article, index) => (
+                <div key={index} className="flex items-center justify-between p-2 rounded hover:bg-gray-50">
+                  <div>
+                    <span className="text-sm font-medium">{article.title}</span>
+                    <div className="flex items-center space-x-2 mt-1">
+                      <Badge variant="outline" className="text-xs">{article.category}</Badge>
+                      <span className="text-xs text-gray-500">{article.relevance}% relevant</span>
+                    </div>
+                  </div>
+                  <BookOpen className="h-4 w-4 text-gray-400" />
+                </div>
+              ))}
+            </div>
           </div>
-        </DashboardWidget>
+        </WidgetContainer>
 
         {/* Activity Feed */}
         <ActivityFeedWidget />
       </div>
 
-      {/* AI Insights for Employee */}
-      <AIInsightsWidget />
+      {/* AI Insights Panel */}
+      <AIInsightsPanel role="Employee" />
     </div>
   );
 };
