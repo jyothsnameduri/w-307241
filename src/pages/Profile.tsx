@@ -215,7 +215,7 @@ const Profile = () => {
                       <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 z-10" />
                       <Select
                         value={formData.department}
-                        onValueChange={(value) => setFormData({...formData, department: value})}
+                        onValueChange={(value: 'IT' | 'HR' | 'Admin' | 'General') => setFormData({...formData, department: value})}
                         disabled={!isEditing}
                       >
                         <SelectTrigger className="pl-10">
