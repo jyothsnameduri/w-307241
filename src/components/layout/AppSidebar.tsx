@@ -28,7 +28,7 @@ import { useAuth } from '@/contexts/AuthContext';
 
 const navigationItems = [
   { title: 'Dashboard', url: '/', icon: Home, roles: ['Employee', 'Agent', 'Admin'] },
-  { title: 'My Tickets', url: '/my-tickets', icon: Ticket, roles: ['Employee', 'Agent', 'Admin'] },
+  { title: 'My Tickets', url: '/tickets?filter=my', icon: Ticket, roles: ['Employee', 'Agent', 'Admin'] },
   { title: 'All Tickets', url: '/tickets', icon: List, roles: ['Agent', 'Admin'] },
   { title: 'Knowledge Base', url: '/knowledge', icon: BookOpen, roles: ['Employee', 'Agent', 'Admin'] },
   { title: 'Reports', url: '/reports', icon: BarChart, roles: ['Agent', 'Admin'] },
@@ -52,7 +52,7 @@ export function AppSidebar() {
     if (path === '/') {
       return currentPath === '/';
     }
-    return currentPath.startsWith(path);
+    return currentPath.startsWith(path.split('?')[0]);
   };
 
   const getNavCls = (path: string) => 
